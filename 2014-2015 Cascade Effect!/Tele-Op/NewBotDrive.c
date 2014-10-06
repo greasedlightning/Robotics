@@ -73,8 +73,8 @@ void joystickOne(){
 		servo[fieldGrabberLeft] = closed;
 		servo[fieldGrabberRight] = 240-closed;
 	}
-	if(joy1Btn(12)){
-		while(joy1Btn(12)){}
+	if(joy1Btn(10)){
+		while(joy1Btn(10)){}
 		intakeOn = !intakeOn;
 	}
 	if(intakeOn){
