@@ -4,6 +4,7 @@
 #pragma config(Servo,  srvo_S1_C2_1,    fieldGrabberRight, tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_2,    fieldGrabberLeft, tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_3,    fieldRoller, tServoStandard)
+#pragma config(Servo,  srvo_S1_C2_4,    frontBridge, tServoStandard)
 #pragma config(Motor,  mtr_S1_C3_1,     driveLeft,  tmotorNormal, openLoop)
 #pragma config(Motor,  mtr_S1_C3_2,     intake, tmotorNormal, openLoop)
 
@@ -18,9 +19,10 @@
 bool intakeOn = false;
 
 void init(){
-	servo[fieldGrabberLeft] = inside-15;
+	servo[fieldGrabberLeft] = 265;//inside-15;
 	servo[fieldGrabberRight] = 235-inside;
 	servo[fieldRoller] = 127;
+	servo[frontBridge] = 255;
 }
 
 void allStop(){
@@ -28,7 +30,7 @@ void allStop(){
 }
 
 float exponentialJoystick(int joyVal){
-	return (float)pow((joyVal/12),2);
+	return (float)5.60015*pow(2.718281828,0.96781*(abs(joyVal)/40));
 }
 
 void joystickOne(){
@@ -53,31 +55,39 @@ void joystickOne(){
 	}else{
 		servo[fieldRoller] = 127;
 	}
+	if(joy1Btn(11))
+		servo[frontBridge] = 0;
+	else if(joy1Btn(12))
+		servo[frontBridge] = 255;
 
-	if(joy1Btn(6))
+	if(joy1Btn(5))
 		motor[lift] = -20;
-	else if(joy1Btn(5))
+	else if(joy1Btn(6))
 		motor[lift] = 100;
 	else
 		motor[lift] = 0;
 
 	if(joy1Btn(1)){
 		servo[fieldGrabberLeft] = inside-15;
-		servo[fieldGrabberRight] = 240-inside;
+		servo[fieldGrabberRight] = 255-inside;
 	}
 	else if(joy1Btn(2)){
 		servo[fieldGrabberLeft] = open;
-		servo[fieldGrabberRight] = 240-open;
+		servo[fieldGrabberRight] = 255-open;
 	}
 	else if(joy1Btn(3)){
 		servo[fieldGrabberLeft] = closed;
-		servo[fieldGrabberRight] = 240-closed;
+		servo[fieldGrabberRight] = 255-closed;
 	}
 	if(joy1Btn(10)){
 		while(joy1Btn(10)){}
 		intakeOn = !intakeOn;
+	}if(joy1Btn(9))
+	{
+		motor[intake] = -100;
+		intakeOn = false;
 	}
-	if(intakeOn){
+	else if(intakeOn){
 		motor[intake] = 100;
 	}
 	else{
