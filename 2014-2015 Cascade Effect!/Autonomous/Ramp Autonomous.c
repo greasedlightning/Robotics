@@ -115,11 +115,12 @@ task main()
 	backward(20);
 	wait1Msec(2500); //Comes off ramp
 	allStop();
+	//Set up to find rolling goal
 	left(100);
 	wait1Msec(250);
 	allStop();
 	wait1Msec(1000);
-	while(SensorValue[sonarSensor]>60){
+	while(SensorValue[sonarSensor]>60){ //scan right until see tube
 		right(50);
 	}
 	right(50);
@@ -129,11 +130,11 @@ task main()
 	PlaySound(soundBlip);
 	wait1Msec(750);
 	allStop();
-	backward(20);
+	backward(20); //Drive towards goal
 	PlaySound(soundBlip);
 	wait1Msec(750);
 	allStop();
-	for(int i=0;i<3;i++){
+	for(int i=0;i<3;i++){ //Grab goal with left stick
 		leftStickDown();
 	}
 	PlaySound(soundBlip);
@@ -143,13 +144,12 @@ task main()
 	PlaySound(soundBlip);
 	wait1Msec(500);
 	allStop();
-	for(int i=0;i<3;i++){
+	for(int i=0;i<3;i++){ //Grab goal with right stick after rotating in place
 		rightStickDown();
 	}
 	allStop();
-	rightStickDown();
 	PlaySound(soundUpwardTones);
-	wait1Msec(1000);
+	wait1Msec(1000); //Done Grabbing
 
 	//DO WHATEVER DEPENDING ON CENTER ROTATION
 	forward(50);
