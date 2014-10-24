@@ -13,7 +13,7 @@
 #define open 0
 #define grab 100
 #define closed 105
-#define inside 215
+#define inside 205
 #define _threshold 20
 
 bool intakeOn = false;
