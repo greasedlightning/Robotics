@@ -22,7 +22,7 @@ void init(){
 	servo[fieldGrabberLeft] = 265;//inside-15;
 	servo[fieldGrabberRight] = 235-inside;
 	servo[fieldRoller] = 127;
-	servo[frontBridge] = 255;
+	servo[frontBridge] = 100;
 }
 
 void allStop(){
@@ -58,7 +58,7 @@ void joystickOne(){
 	if(joy1Btn(11))
 		servo[frontBridge] = 0;
 	else if(joy1Btn(12))
-		servo[frontBridge] = 255;
+		servo[frontBridge] = 100;
 
 	if(joy1Btn(5))
 		motor[lift] = -20;

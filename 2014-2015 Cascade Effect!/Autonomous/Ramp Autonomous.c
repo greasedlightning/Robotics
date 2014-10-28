@@ -8,8 +8,10 @@
 #pragma config(Motor,  mtr_S1_C3_1,     driveLeft,  tmotorNormal, openLoop)
 #pragma config(Motor,  mtr_S1_C3_2,     intake, tmotorNormal, openLoop)
 #pragma config(Sensor, S2,              sonarSensor,       sensorSONAR)
+#pragma config(Sensor, S3,     HTIRS2,              sensorI2CCustom)
 
 #include "JoystickDriver.c"
+#include "/hitechnic-irseeker-v2.h"
 
 #define open 0
 #define grab 100
@@ -17,6 +19,7 @@
 #define inside 215
 #define _threshold 20
 
+int acS1, acS2, acS3, acS4, acS5 = 0;
 
 void allStop(){
 	motor[driveLeft] = 0;
@@ -105,7 +108,7 @@ void sticksUp(){
 void init(){
 	sticksUp();
 	servo[fieldRoller] = 127;
-	servo[frontBridge] = 255;
+	servo[frontBridge] = 100;
 }
 
 task main()
@@ -125,7 +128,7 @@ task main()
 	}
 	right(50);
 	PlaySound(soundBlip);
-	wait1Msec(50);
+	wait1Msec(100);
 	allStop();
 	PlaySound(soundBlip);
 	wait1Msec(750);
@@ -151,15 +154,50 @@ task main()
 	PlaySound(soundUpwardTones);
 	wait1Msec(1000); //Done Grabbing
 
-	//DO WHATEVER DEPENDING ON CENTER ROTATION
+	//Get in position
 	forward(50);
 	wait1Msec(750);
 	allStop();
 	wait1Msec(750);
 	right(100);
-	wait1Msec(600);
+	wait1Msec(525);
+	allStop();
+	wait1Msec(700);
+	forward(50);
+	wait1Msec(750);
 	allStop();
 	wait1Msec(750);
-	forward(100);
-	wait1Msec(500);
+	//DO WHATEVER DEPENDING ON CENTER ROTATION
+	HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
+	int avg1=acS1,avg2,avg3,avg4,avg5;
+	for(int j=0;j<10;++j){
+		HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
+		avg1=(avg1+acS1)/2;
+		avg2=(avg2+acS2)/2;
+		avg3=(avg3+acS3)/2;
+		avg4=(avg4+acS4)/2;
+		avg5=(avg5+acS5)/2;
+	}
+	if(avg2>16||avg3>70){ //Center is in rotation 1
+		while(true){nxtDisplayCenteredTextLine(1,"Rot1");}
+		//left(50);
+		//wait1Msec(500);
+		//allStop();
+		//wait1Msec(750);
+		//forward(50);
+		//wait1Msec(500);
+		//allStop();
+		//wait1Msec(750);
+		//right(50);
+		//wait1Msec(500);
+		//allStop();
+		//StopAllTasks();
+	}
+	else if(avg3>10){ //Center is in rotation 2
+		while(true){nxtDisplayCenteredTextLine(1,"Rot2");}
+	}
+	else{ //Center is in rotation 3
+		while(true){nxtDisplayCenteredTextLine(1,"Rot3");}
+	}
+
 }
