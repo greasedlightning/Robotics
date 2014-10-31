@@ -114,6 +114,9 @@ void init(){
 task main()
 {
 	init();
+
+	//sticksDown();
+	//goto determineRotation;
 	//waitForStart();
 	backward(20);
 	wait1Msec(2500); //Comes off ramp
@@ -145,8 +148,9 @@ task main()
 	allStop();
 	right(50);
 	PlaySound(soundBlip);
-	wait1Msec(500);
+	wait1Msec(650);
 	allStop();
+	wait1Msec(200);
 	for(int i=0;i<3;i++){ //Grab goal with right stick after rotating in place
 		rightStickDown();
 	}
@@ -160,7 +164,7 @@ task main()
 	allStop();
 	wait1Msec(750);
 	right(100);
-	wait1Msec(525);
+	wait1Msec(475);
 	allStop();
 	wait1Msec(700);
 	forward(50);
@@ -168,6 +172,7 @@ task main()
 	allStop();
 	wait1Msec(750);
 	//DO WHATEVER DEPENDING ON CENTER ROTATION
+	determineRotation:
 	HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
 	int avg1=acS1,avg2,avg3,avg4,avg5;
 	for(int j=0;j<10;++j){
@@ -194,10 +199,26 @@ task main()
 		//StopAllTasks();
 	}
 	else if(avg3>10){ //Center is in rotation 2
-		while(true){nxtDisplayCenteredTextLine(1,"Rot2");}
+		nxtDisplayCenteredTextLine(1,"Rot2");
+		left(100);
+		wait1Msec(425);
+		allStop();
+		wait1Msec(750);
+		forward(50);
+		wait1Msec(1000);
 	}
 	else{ //Center is in rotation 3
-		while(true){nxtDisplayCenteredTextLine(1,"Rot3");}
+		nxtDisplayCenteredTextLine(1,"Rot3");
+		forward(50);
+		wait1Msec(600);
+		allStop();
+		wait1Msec(750);
+		left(100);
+		wait1Msec(900);
+		allStop();
+		wait1Msec(750);
+		forward(50);
+		wait1Msec(750);
+		allStop();
 	}
-
 }
