@@ -3,7 +3,7 @@
 #pragma config(Motor,  mtr_S1_C1_2,     lift,  tmotorNormal, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    fieldGrabberRight, tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_2,    fieldGrabberLeft, tServoStandard)
-#pragma config(Servo,  srvo_S1_C2_3,    fieldRoller, tServoStandard)
+#pragma config(Servo,  srvo_S1_C2_3,    scoopBridge, tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_4,    frontBridge, tServoStandard)
 #pragma config(Motor,  mtr_S1_C3_1,     driveLeft,  tmotorNormal, openLoop)
 #pragma config(Motor,  mtr_S1_C3_2,     intake, tmotorNormal, openLoop)
@@ -30,15 +30,15 @@ void allStop(){
 }
 
 void lowerBridge(){
-	servo[fieldRoller] = 256;
+	servo[scoopBridge] = 256;
 }
 
 void raiseBridge(){
-	servo[fieldRoller] = 0;
+	servo[scoopBridge] = 0;
 }
 
 void stopBridge(){
-	servo[fieldRoller] = 127;
+	servo[scoopBridge] = 127;
 }
 
 void raiseLift(int powerLevel){
@@ -107,7 +107,7 @@ void sticksUp(){
 
 void init(){
 	sticksUp();
-	servo[fieldRoller] = 127;
+	servo[scoopBridge] = 127;
 	servo[frontBridge] = 100;
 }
 
