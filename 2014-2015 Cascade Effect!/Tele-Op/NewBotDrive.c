@@ -50,7 +50,11 @@ void joystickOne(){
 		motor[driveLeft] = 0;
 	}
 
-	if(joy1Btn(7)){
+	if(joy2Btn(7)){
+		servo[scoopBridge] = 0;
+	}else if(joy2Btn(8)){
+		servo[scoopBridge] = 256;
+	}else if(joy1Btn(7)){
 		servo[scoopBridge] = 0;
 	}else if(joy1Btn(8)){
 		servo[scoopBridge] = 256;

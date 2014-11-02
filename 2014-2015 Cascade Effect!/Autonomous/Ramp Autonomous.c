@@ -27,6 +27,7 @@ void allStop(){
 	motor[lift] = 0;
 	motor[intake] = 0;
 	servo[frontBridge] = 127;
+	servo[scoopBridge] = 127;
 }
 
 void lowerBridge(){
@@ -109,6 +110,8 @@ void init(){
 	sticksUp();
 	servo[scoopBridge] = 127;
 	servo[frontBridge] = 100;
+	nMotorEncoder[intake] = 0;
+
 }
 
 task main()
@@ -117,7 +120,7 @@ task main()
 
 	//sticksDown();
 	//goto determineRotation;
-	//waitForStart();
+	waitForStart();
 	backward(20);
 	wait1Msec(2500); //Comes off ramp
 	allStop();
@@ -157,6 +160,40 @@ task main()
 	allStop();
 	PlaySound(soundUpwardTones);
 	wait1Msec(1000); //Done Grabbing
+
+	//Drop Balls
+	/*ballsDropper:
+	while(nMotorEncoder[intake]<450){
+		raiseLift(100);
+		nxtDisplayCenteredTextLine(1,"%i",nMotorEncoder[intake]);
+	}int enc = nMotorEncoder[intake];
+	allStop();
+	wait1Msec(500);
+	raiseBridge();
+	wait1Msec(500);
+	allStop();
+	forward(20);
+	wait1Msec(500);
+	allStop();
+	wait1Msec(500);
+	backward(50);
+	wait1Msec(500);
+	allStop();
+	wait1Msec(500);
+	raiseBridge();
+	wait1Msec(1000);
+	allStop();
+	wait1Msec(2000);
+	lowerBridge();
+	wait1Msec(2000);
+	allStop();
+	while(enc-nMotorEncoder[intake]>100){
+		nxtDisplayCenteredTextLine(1,"%i",nMotorEncoder[intake]);
+		lowerLift(20);
+	}
+	StopAllTasks();*/
+
+
 
 	//Get in position
 	forward(50);
@@ -218,7 +255,7 @@ task main()
 		allStop();
 		wait1Msec(750);
 		forward(50);
-		wait1Msec(750);
+		wait1Msec(1250);
 		allStop();
 	}
 }
