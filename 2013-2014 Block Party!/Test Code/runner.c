@@ -1,5 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  none,  none,  none)
-#pragma config(Motor, mtr_S1_C1_1, rightMotor, motorNormal)
+#pragma config(Motor, mtr_S1_C1_1, rightMotor, motorNormal, reversed)
 #pragma config(Motor, mtr_S1_C1_2, leftMotor, motorNormal, reversed)
 #pragma config(Sensor, S2,     S2,               sensorLightActive)
 #pragma config(Sensor, S3,     S3,               sensorSONAR)
@@ -16,15 +16,24 @@ task main()
 		while(SensorValue[S4]>distance){
 			nxtDisplayCenteredBigTextLine(1,"Forward");
 			nxtDisplayCenteredBigTextLine(5,"%icm",SensorValue[S4]);
+			if(SensorValue[S2]>threshold){
 				motor[rightMotor]=100;
 				motor[leftMotor]=100;
-
+			}else{
+				motor[rightMotor]=-100;
+				motor[leftMotor]=100;
+			}
 		}
 		while(SensorValue[S3]>distance){
 			nxtDisplayCenteredBigTextLine(1,"Reverse");
 			nxtDisplayCenteredBigTextLine(5,"%icm",SensorValue[S3]);
+			if(SensorValue[S2]>threshold){
 				motor[rightMotor]=-100;
 				motor[leftMotor]=-100;
+			}else{
+				motor[rightMotor]=100;
+				motor[leftMotor]=-100;
+			}
 		}
 	}
 }

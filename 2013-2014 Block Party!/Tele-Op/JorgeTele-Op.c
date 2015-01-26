@@ -56,7 +56,7 @@ void updateSensors(){
 
 void joystickControllerOne() //Driver 1 Controls drive train and hang mechanism
 
-{
+{/*
         if(joy1Btn(1))
                 motor[flagSpinner]=100;
         else if(joy1Btn(3))
@@ -77,7 +77,7 @@ void joystickControllerOne() //Driver 1 Controls drive train and hang mechanism
       	}else{
        		motor[robotLifterRight]=0;
         	motor[robotLifterLeft]=0;
-      	}
+      	}*/
 
         //Accidental Mode Switch fix
         if(joystick.joy1_TopHat==0){
@@ -107,7 +107,7 @@ void joystickControllerOne() //Driver 1 Controls drive train and hang mechanism
 }
 
 void joystickControllerTwo() //Driver 2 controls cube intake and cube lifter
-{
+{/*
         if(cubeLiftCount<0) //Don't let the count go negative
                 cubeLiftCount=0;
 
@@ -141,7 +141,7 @@ void joystickControllerTwo() //Driver 2 controls cube intake and cube lifter
                 down=true;
                 if(cubeLiftCount<50)
                         down=false;
-        }*/
+        }*//*
         else{ //Stop
                 servo[cubeLifter]=CRStop;
             }
@@ -171,7 +171,309 @@ void joystickControllerTwo() //Driver 2 controls cube intake and cube lifter
                 motor[primaryCubeIntake] = 0;
                 motor[motorA] = 0;
                 motor[motorB] = 0;
-        }
+        }*/
+}
+void BeethovenFifth()
+{
+	//  Piano Player II
+	//    rest);
+	wait10Msec(75);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(622,38);	wait10Msec(38);
+	//    rest);
+	wait10Msec(38);
+	PlayTone(698,15);	wait10Msec(19);
+	PlayTone(698,15);	wait10Msec(19);
+	PlayTone(698,15);	wait10Msec(19);
+	PlayTone(587,38);	wait10Msec(38);
+	//    rest);
+	wait10Msec(75);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(622,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(1244,15);	wait10Msec(19);
+	PlayTone(1244,15);	wait10Msec(19);
+	PlayTone(1244,15);	wait10Msec(19);
+	PlayTone(1047,38);	wait10Msec(38);
+	//    rest);
+	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(587,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(831,15);	wait10Msec(19);
+	PlayTone(784,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1175,38);	wait10Msec(38);
+	//    rest);
+	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1244,19);	wait10Msec(19);
+	//    rest);
+	wait10Msec(19);
+	PlayTone(1175,15);	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1244,19);	wait10Msec(19);
+	//    rest);
+	wait10Msec(19);
+	PlayTone(1175,15);	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1568,15);	wait10Msec(19);
+	PlayTone(1397,15);	wait10Msec(19);
+	PlayTone(1244,19);	wait10Msec(19);
+	//    rest);
+	wait10Msec(38);
+	PlayTone(1047,19);	wait10Msec(19);
+	//    rest);
+	wait10Msec(38);
+	PlayTone(784,38);	wait10Msec(38);
+	return;
+}
+
+
+void HallOfMountainKing()
+{
+	wait10Msec(8);  // Rest
+	PlayTone(220,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,24);  wait10Msec(30);
+	PlayTone(311,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(311,24);  wait10Msec(30);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(233,12);  wait10Msec(15);
+	PlayTone(294,24);  wait10Msec(30);
+	PlayTone(220,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(392,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(392,48);  wait10Msec(60);
+	wait10Msec(8);  // Rest
+	PlayTone(220,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,24);  wait10Msec(30);
+	PlayTone(311,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(311,24);  wait10Msec(30);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(233,12);  wait10Msec(15);
+	PlayTone(294,24);  wait10Msec(30);
+	PlayTone(220,12);  wait10Msec(15);
+	PlayTone(247,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(294,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(392,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(262,12);  wait10Msec(15);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(392,48);  wait10Msec(60);
+	wait10Msec(8);  // Rest
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(370,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(523,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(523,24);  wait10Msec(30);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(370,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(523,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(523,24);  wait10Msec(30);
+	PlayTone(494,48);  wait10Msec(60);
+	wait10Msec(8);  // Rest
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(370,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(523,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(523,24);  wait10Msec(30);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(330,12);  wait10Msec(15);
+	PlayTone(370,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(494,12);  wait10Msec(15);
+	PlayTone(415,12);  wait10Msec(15);
+	PlayTone(494,24);  wait10Msec(30);
+	PlayTone(523,12);  wait10Msec(15);
+	PlayTone(440,12);  wait10Msec(15);
+	PlayTone(523,24);  wait10Msec(30);
+	PlayTone(494,48);  wait10Msec(60);
+	wait10Msec(8);  // Rest
+	wait10Msec(8);  // Rest
+	PlayTone(440,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(659,24);  wait10Msec(30);
+	PlayTone(622,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(622,24);  wait10Msec(30);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(466,8);  wait10Msec(15);
+	PlayTone(587,24);  wait10Msec(30);
+	PlayTone(440,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(880,8);  wait10Msec(15);
+	PlayTone(784,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(784,48);  wait10Msec(60);
+	wait10Msec(8);  // Rest
+	PlayTone(440,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(659,24);  wait10Msec(30);
+	PlayTone(622,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(622,24);  wait10Msec(30);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(466,8);  wait10Msec(15);
+	PlayTone(587,24);  wait10Msec(30);
+	PlayTone(440,8);  wait10Msec(15);
+	PlayTone(494,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(587,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(523,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(880,8);  wait10Msec(15);
+	PlayTone(831,8);  wait10Msec(15);
+	PlayTone(659,8);  wait10Msec(15);
+	PlayTone(831,8);  wait10Msec(15);
+	PlayTone(988,8);  wait10Msec(15);
+	PlayTone(880,48); wait10Msec(60);
+	return;
+}
+
+void FrereJacque()
+{
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(587,40);	wait10Msec(50);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(587,40);	wait10Msec(50);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(698,40);	wait10Msec(50);
+	PlayTone(784,80);	wait10Msec(90);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(698,40);	wait10Msec(50);
+	PlayTone(784,80);	wait10Msec(90);
+	PlayTone(784,20);	wait10Msec(30);
+	PlayTone(880,20);	wait10Msec(30);
+	PlayTone(784,20);	wait10Msec(30);
+	PlayTone(698,20);	wait10Msec(30);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(784,20);	wait10Msec(30);
+	PlayTone(880,20);	wait10Msec(30);
+	PlayTone(784,20);	wait10Msec(30);
+	PlayTone(698,20);	wait10Msec(30);
+	PlayTone(659,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(392,40);	wait10Msec(50);
+	PlayTone(523,80);	wait10Msec(90);
+	PlayTone(523,40);	wait10Msec(50);
+	PlayTone(392,40);	wait10Msec(50);
+	PlayTone(523,80);	wait10Msec(90);
+	return;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Separate task to actually play the three songs
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+task playSongs()
+{
+	//
+	// Set the task to high priority so that there is no jitter in the playback of sounds
+	//
+	nSchedulePriority = kHighPriority;
+
+	//
+	// Play the three songs in sequential order
+	//
+	HallOfMountainKing();
+	wait10Msec(50);
+
+	BeethovenFifth();
+	wait10Msec(50);
+
+	FrereJacque();
+	wait10Msec(50);
+
+	StartTask(playSongs); // we're finished.
+	return;
 }
 task main(){
 
@@ -188,7 +490,7 @@ task main(){
                 }else{
                         joystickControllerOne();
                         joystickControllerTwo();
-     										nxtDisplayCenteredTextLine(2, "%i", HTMCreadRelativeHeading(HTCOMPASS));
+      nxtDisplayCenteredTextLine(2, "%i", HTMCreadRelativeHeading(HTCOMPASS));
                 }
         }
 }

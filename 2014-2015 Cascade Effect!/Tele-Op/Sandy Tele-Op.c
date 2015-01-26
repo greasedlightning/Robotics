@@ -8,8 +8,10 @@
 #pragma config(Servo,  srvo_S1_C2_2,    fieldGrabberLeft,     tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_3,    scoopBridge,          tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_4,    rampBridge,          tServoStandard)
+#pragma config(Sensor, S4,     HTGYRO,              sensorAnalogInactive)
 
 #include "JoystickDriver.c"
+#include "/hitechnic-gyro.h"
 
 #define _open 0
 #define _closed 205
@@ -18,7 +20,7 @@
 void init(){
 	servo[fieldGrabberLeft] = _open;
 	servo[fieldGrabberRight] = 255-_open;
-	servo[scoopBridge] = 127;
+	servo[scoopBridge] = 155;
 	servo[rampBridge] = 0;
 }
 
@@ -38,12 +40,12 @@ void sticksUp(){
 
 void retainBalls()
 {
-	servo[scoopBridge] = 0;
+	servo[scoopBridge] = 155;
 }
 
 void releaseBalls()
 {
-	servo[scoopBridge] = 256;
+	servo[scoopBridge] = 0;
 }
 
 void closeRamp()
@@ -64,34 +66,56 @@ void allStop(){
 	motor[intake] = 0;
 }
 
+
+float heading = 0;
+
+void drive(int direction,int powerLevel){//Dir:0 = forward, 1 = reverse:
+  //Accurately drive in a straigt line using GYRO
+	int dir = direction==0?1:-1;
+
+	motor[driveLeft] = (powerLevel+powerLevel*.15*heading)*dir;
+	motor[driveRight] = -(powerLevel-powerLevel*.15*heading)*dir;
+
+}
+
+
 //Joystick one controls the drive train and goal grabbers
 void joystickOne(){
 
 	getJoystickSettings(joystick);
+	if(joystick.joy1_TopHat==-1)
+		heading = 0;
+	if(joystick.joy1_TopHat==0){
+		drive(0,100);
+		}else if(joystick.joy1_TopHat==4){
+		drive(1,100);
+	}
+	else{
+		if(abs(joystick.joy1_y1)>_threshold)//Check joystick not in deadzone
+		{
+			motor[driveLeft] = joystick.joy1_y1/abs(joystick.joy1_y1)*exponentialJoystick(joystick.joy1_y1);
+		}
+		else
+		{
+			motor[driveLeft] = 0;
+		}
+		if(abs(joystick.joy1_y2)>_threshold)
+		{
+			motor[driveRight] = -joystick.joy1_y2/abs(joystick.joy1_y2)*exponentialJoystick(joystick.joy1_y2);
+		}
+		else
+		{
+			motor[driveRight] = 0;
+		}
+	}
 
-	if(abs(joystick.joy1_y1)>_threshold)//Check joystick not in deadzone
-	{
-		motor[driveLeft] = joystick.joy1_y1/abs(joystick.joy1_y1)*exponentialJoystick(joystick.joy1_y1);
-	}
-	else
-	{
-		motor[driveLeft] = 0;
-	}
-	if(abs(joystick.joy1_y2)>_threshold)
-	{
-		motor[driveRight] = -joystick.joy1_y2/abs(joystick.joy1_y2)*exponentialJoystick(joystick.joy1_y2);
-	}
-	else
-	{
-		motor[driveRight] = 0;
-	}
 
-	if(joy1Btn(8))//Grab rolling goal
+	if(joy1Btn(8)||joy1Btn(7))//Grab rolling goal
 	{
 		sticksDown();
 	}
 
-	if(joy1Btn(6))//Release rolling goal
+	if(joy1Btn(6)||joy1Btn(5))//Release rolling goal
 	{
 		sticksUp();
 	}
@@ -143,11 +167,11 @@ void joystickTwo()
 
 	if(joy2Btn(7))//Release balls
 	{
-		releaseBalls();
+		retainBalls();
 	}
 	else if(joy2Btn(8))//Raise scoop bridge
 	{
-		retainBalls();
+		releaseBalls();
 	}
 
 }
@@ -157,12 +181,32 @@ task main()
 
 	init();
 
+	HTGYROstartCal(HTGYRO);
 	waitForStart();
+	float rotSpeed;
 
 	while(true)
 	{
 		joystickOne();
 		joystickTwo();
+
+		nxtDisplayCenteredBigTextLine(1,"%i",heading);
+
+		while (time1[T1] < 20)
+			wait1Msec(1);
+		// Reset the timer
+		time1[T1]=0;
+
+		// Read the current rotation speed
+		rotSpeed = HTGYROreadRot(HTGYRO);
+
+		// Calculate the new heading by adding the amount of degrees
+		// we've turned in the last 20ms
+		// If our current rate of rotation is 100 degrees/second,
+		// then we will have turned 100 * (20/1000) = 2 degrees since
+		// the last time we measured.
+		heading += rotSpeed * 0.02;
+
 		wait1Msec(5);//Debouncing
 	}
 }
