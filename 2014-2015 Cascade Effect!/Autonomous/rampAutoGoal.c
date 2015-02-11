@@ -22,7 +22,7 @@
 #define _threshold 20
 
 int acS1, acS2, acS3, acS4, acS5 = 0;
-float timer;
+float globalHeading = 0.0;
 
 float exponentialJoystick(int joyVal){
 	return (float)5.60015*pow(2.718281828,0.96781*(abs(joyVal)/40));
@@ -40,12 +40,12 @@ void sticksUp(){
 
 void retainBalls()
 {
-	servo[scoopBridge] = 0;
+	servo[scoopBridge] = 155;
 }
 
 void releaseBalls()
 {
-	servo[scoopBridge] = 155;
+	servo[scoopBridge] = 0;
 }
 
 void closeRamp()
@@ -67,11 +67,13 @@ void allStop(){
 }
 
 void raiseLift(int powerLevel){
-	motor[lift] = abs(powerLevel);
+		motor[lift] = powerLevel;
+		motor[liftMotor3] = -powerLevel;
 }
 
 void lowerLift(int powerLevel){
-	motor[lift] = -abs(powerLevel);
+		motor[lift] = -powerLevel;
+		motor[liftMotor3] = powerLevel;
 }
 
 void intakeIn(int powerLevel){
@@ -110,6 +112,8 @@ void init(){
 	servo[rampBridge] = 0;
 	nMotorEncoder[intake] = 0;
 	openRamp();
+	sticksUp();
+	HTGYROstartCal(HTGYRO);
 }
 
 void drive(int direction,float time,int powerLevel){//Dir:time(seconds):1 = reverse, 0 = forward:
@@ -150,7 +154,7 @@ void turn(int direction,int degrees,int powerLevel){//Dir:1 = right, 0 = left::D
 	//Accurately turn with GYRO
 	float rotSpeed = 0;
 	float heading = 0;
-	int slow = powerLevel/3;
+	int slow = powerLevel/2;
 	// Calibrate the gyro, make sure you hold the sensor still
 	HTGYROstartCal(HTGYRO);
 	while(true){
@@ -181,97 +185,150 @@ void turn(int direction,int degrees,int powerLevel){//Dir:1 = right, 0 = left::D
 	}
 }
 
+task keepHeading(){
+	float rotSpeed = 0;
+	// Calibrate the gyro, make sure you hold the sensor still
+	while(true){
+		while (time1[T3] < 20)
+			wait1Msec(1);
+
+		// Reset the timer
+		time1[T3]=0;
+
+		// Read the current rotation speed
+		rotSpeed = HTGYROreadRot(HTGYRO);
+
+		// Calculate the new heading by adding the amount of degrees
+		// we've turned in the last 20ms
+		// If our current rate of rotation is 100 degrees/second,
+		// then we will have turned 100 * (20/1000) = 2 degrees since
+		// the last time we measured.
+		globalHeading += rotSpeed * 0.02;
+		nxtDisplayCenteredTextLine(1,"GH:%f",globalHeading);
+		wait1Msec(1);
+		if(globalHeading>180)
+			globalHeading = -180;
+		else if(globalHeading<-180)
+			globalHeading =  180;
+	}
+}
+
+void turnToGlobalHeading(int targetHeading){
+	int powerLevel = 70;
+	int slow = 50;
+	if(globalHeading>targetHeading){
+		while(globalHeading>targetHeading){
+			if(abs(globalHeading-targetHeading)<20)
+				powerLevel=slow;
+			right(powerLevel);
+			nxtDisplayCenteredTextLine(2,"Get toL");
+		}
+	}
+	else if(globalHeading<targetHeading){
+		while(globalHeading<targetHeading){
+			if(abs(globalHeading-targetHeading)<20)
+				powerLevel=slow;
+			left(powerLevel);
+			nxtDisplayCenteredTextLine(2,"Get toR");
+		}
+	}
+}
+
 task main()
 {
 	init();
 	waitForStart();
-	drive(1,1.9,30);
+	StartTask(keepHeading);
+	while(SensorValue[sonarSensor]>25){
+		backward(30);
+	}
+	allStop();
+	wait1Msec(100);
+	backward(20);
+	wait1Msec(700);
+	sticksDown();
+	wait1Msec(250);
+	allStop();
+	/*forward(30);
+	wait1Msec(500);
 	allStop();
 	wait1Msec(500);
-	turn(1,90,50);
+  raiseLift(100);
+  while (nMotorEncoder[intake] < 2200) //while the encoder wheel turns one revolution
+  {
+  }
 	allStop();
-	wait1Msec(700);
-	bFloatDuringInactiveMotorPWM = true;
-	drive(0,1.0,50);
-	bFloatDuringInactiveMotorPWM = false;
+	wait1Msec(500);
+	releaseBalls();
+	allStop();
+	wait1Msec(3000);
+	retainBalls();
 	allStop();
 	wait1Msec(750);
-	//DO WHATEVER DEPENDING ON CENTER ROTATION
-	determineRotation:
-	HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
-	int avg1=acS1,avg2,avg3,avg4,avg5;
-	for(int j=0;j<10;++j){
-		HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
-		avg1=(avg1+acS1)/2;
-		avg2=(avg2+acS2)/2;
-		avg3=(avg3+acS3)/2;
-		avg4=(avg4+acS4)/2;
-		avg5=(avg5+acS5)/2;
+  lowerLift(20);
+  while (nMotorEncoder[intake] > 0) //while the encoder wheel turns one revolution
+  {
+  }
+	allStop();
+	wait1Msec(500);*/
+	turn(1,19,70);
+	allStop();
+	wait1Msec(100);
+	drive(0,2.0,100);
+	allStop();
+	wait1Msec(100);
+	turn(0,170,100);
+	allStop();
+	wait1Msec(100);
+	sticksUp();
+	drive(1,.3,100);
+	allStop();
+	wait1Msec(100);
+	turn(0,180,100);
+	allStop();
+	wait1Msec(500);
+	//while(SensorValue[sonarSensor]>40){
+	//	backward(100);
+	//}
+	//turnToGlobalHeading(-15);
+	allStop();
+	wait1Msec(100);
+	drive(1,1.3,100);
+	allStop();
+	wait1Msec(100);
+	turnToGlobalHeading(-78);
+	allStop();
+	wait1Msec(100);
+	while(SensorValue[sonarSensor]>25){
+		backward(30);
 	}
-	if(acS2>16||acS3>30){ //Center is in rotation 1
-		nxtDisplayCenteredTextLine(1,"Rot1");
-		turn(0,90,70);
-		allStop();
-		wait1Msec(500);
-		drive(0,.98,50);
-		allStop();
-		wait1Msec(500);
-		turn(1,80,50);
-		allStop();
-		wait1Msec(500);
-		drive(0,1.5,100);
-		allStop();
-		wait1Msec(500);
+	allStop();
+	wait1Msec(100);
+	while(SensorValue[sonarSensor]<200){
+		left(50);
 	}
-	else{
-		turn(1,25,50);
-		allStop();
-		wait1Msec(500);
-		time1[T1]=0;
-		bool irfound = false;
-		timer = 0.0;
-		while(time1[T1] < 700){
-			HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
-			forward(50);
-			if(acS2>15){
-				irfound = true;
-				timer = time1[T1]/1000+.3;
-				break;
-			}
-		}
-		allStop();
-		wait1Msec(500);
-		if(irfound){ //Center is in rotation 2
-			nxtDisplayCenteredTextLine(1,"Timer:%f",timer);
-			nxtDisplayCenteredTextLine(1,"Rot2:%d",acS2);
-			drive(1,timer,50);
-			allStop();
-			wait1Msec(500);
-			turn(0,90,80);
-			allStop();
-			wait1Msec(500);
-			drive(0,1.5,100);
-			allStop();
-			wait1Msec(500);
-		}
-		else{ //Center is in rotation 3
-			nxtDisplayCenteredTextLine(1,"Rot3");
-			drive(1,.7,50);
-			allStop();
-			wait1Msec(500);
-			turn(1,125,50);
-			while(SensorValue[sonarSensor]>20){
-				nxtDisplayCenteredBigTextLine(1,"GOGOGOGOG");
-				backward(30);
-			}
-			allStop();
-			wait1Msec(750);
-			turn(0,65,100);
-			allStop();
-			wait1Msec(500);
-			drive(1,1.5,100);
-			allStop();
-			wait1Msec(1000);
-		}
+	allStop();
+	wait1Msec(100);
+	turn(0,22,70);
+	allStop();
+	wait1Msec(100);
+	while(SensorValue[sonarSensor]>25){
+		backward(30);
 	}
+	backward(30);
+	wait1Msec(700);
+	sticksDown();
+	wait1Msec(250);
+	allStop();
+	turn(1,18,70);
+	allStop();
+	wait1Msec(100);
+	drive(0,2.7,100);
+	allStop();
+	wait1Msec(100);
+	turn(0,175,100);
+	allStop();
+	wait1Msec(100);
+	sticksUp();
+	drive(1,.3,100);
 }

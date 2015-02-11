@@ -20,8 +20,9 @@
 void init(){
 	servo[fieldGrabberLeft] = _open;
 	servo[fieldGrabberRight] = 255-_open;
-	servo[scoopBridge] = 155;
 	servo[rampBridge] = 0;
+	nMotorEncoder[intake] = 0;
+	servo[scoopBridge] = 155;
 }
 
 float exponentialJoystick(int joyVal){
@@ -45,7 +46,7 @@ void retainBalls()
 
 void releaseBalls()
 {
-	servo[scoopBridge] = 0;
+	servo[scoopBridge] = 10;
 }
 
 void closeRamp()
@@ -72,12 +73,14 @@ float heading = 0;
 void drive(int direction,int powerLevel){//Dir:0 = forward, 1 = reverse:
   //Accurately drive in a straigt line using GYRO
 	int dir = direction==0?1:-1;
-
-	motor[driveLeft] = (powerLevel+powerLevel*.15*heading)*dir;
-	motor[driveRight] = -(powerLevel-powerLevel*.15*heading)*dir;
-
+	if(direction==0){
+		motor[driveLeft] = (powerLevel+powerLevel*.15*heading)*dir;
+		motor[driveRight] = -(powerLevel-powerLevel*.15*heading)*dir;
+	}else{
+		motor[driveLeft] = (powerLevel-powerLevel*.15*heading)*dir;
+		motor[driveRight] = -(powerLevel+powerLevel*.15*heading)*dir;
+	}
 }
-
 
 //Joystick one controls the drive train and goal grabbers
 void joystickOne(){
@@ -134,12 +137,11 @@ void joystickTwo()
 	}
 	else if(joy2Btn(3))//Intake forward
 	{
-		motor[intake] = 50;
+		motor[intake] = 80;
 	}
 	else{
 		motor[intake] = 0;
 	}
-
 	if(joy2Btn(2))//Ramp bridge down
 	{
 		openRamp();
@@ -151,13 +153,13 @@ void joystickTwo()
 
 	if(joy2Btn(5))//Lift down
 	{
-		motor[lift] = -20;
-		motor[liftMotor3] = 20;
+		motor[lift] = 70;
+		motor[liftMotor3] = -70;
 	}
 	else if(joy2Btn(6))//Lift ups
 	{
-		motor[lift] = 100;
-		motor[liftMotor3] = -100;
+		motor[lift] = -100;
+		motor[liftMotor3] = 100;
 	}
 	else
 	{
@@ -165,11 +167,11 @@ void joystickTwo()
 		motor[liftMotor3] = 0;
 	}
 
-	if(joy2Btn(7))//Release balls
+	if(joy2Btn(7))//Raise scoop bridge
 	{
 		retainBalls();
 	}
-	else if(joy2Btn(8))//Raise scoop bridge
+	else if(joy2Btn(8))//Release balls
 	{
 		releaseBalls();
 	}
@@ -191,6 +193,7 @@ task main()
 		joystickTwo();
 
 		nxtDisplayCenteredBigTextLine(1,"%i",heading);
+		nxtDisplayCenteredTextLine(2,"Intake:%i",nMotorEncoder[intake]);
 
 		while (time1[T1] < 20)
 			wait1Msec(1);
