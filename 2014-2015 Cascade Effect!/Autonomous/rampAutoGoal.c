@@ -67,13 +67,13 @@ void allStop(){
 }
 
 void raiseLift(int powerLevel){
-		motor[lift] = powerLevel;
-		motor[liftMotor3] = -powerLevel;
+		motor[lift] = -powerLevel;
+		motor[liftMotor3] = powerLevel;
 }
 
 void lowerLift(int powerLevel){
-		motor[lift] = -powerLevel;
-		motor[liftMotor3] = powerLevel;
+		motor[lift] = powerLevel;
+		motor[liftMotor3] = -powerLevel;
 }
 
 void intakeIn(int powerLevel){
@@ -249,12 +249,9 @@ task main()
 	sticksDown();
 	wait1Msec(250);
 	allStop();
-	/*forward(30);
-	wait1Msec(500);
-	allStop();
-	wait1Msec(500);
+	wait1Msec(100);
   raiseLift(100);
-  while (nMotorEncoder[intake] < 2200) //while the encoder wheel turns one revolution
+  while (nMotorEncoder[intake] > -2050) //while the encoder wheel turns one revolution
   {
   }
 	allStop();
@@ -266,25 +263,25 @@ task main()
 	allStop();
 	wait1Msec(750);
   lowerLift(20);
-  while (nMotorEncoder[intake] > 0) //while the encoder wheel turns one revolution
+  while (nMotorEncoder[intake] < 500) //while the encoder wheel turns one revolution
   {
   }
 	allStop();
-	wait1Msec(500);*/
+	wait1Msec(500);
 	turn(1,19,70);
 	allStop();
 	wait1Msec(100);
 	drive(0,2.0,100);
 	allStop();
 	wait1Msec(100);
-	turn(0,170,100);
+	turn(0,170,70);
 	allStop();
 	wait1Msec(100);
 	sticksUp();
 	drive(1,.3,100);
 	allStop();
 	wait1Msec(100);
-	turn(0,180,100);
+	turn(0,180,70);
 	allStop();
 	wait1Msec(500);
 	//while(SensorValue[sonarSensor]>40){
@@ -309,7 +306,7 @@ task main()
 	}
 	allStop();
 	wait1Msec(100);
-	turn(0,22,70);
+	turn(0,18,70);
 	allStop();
 	wait1Msec(100);
 	while(SensorValue[sonarSensor]>25){
@@ -326,7 +323,7 @@ task main()
 	drive(0,2.7,100);
 	allStop();
 	wait1Msec(100);
-	turn(0,175,100);
+	turn(0,175,70);
 	allStop();
 	wait1Msec(100);
 	sticksUp();

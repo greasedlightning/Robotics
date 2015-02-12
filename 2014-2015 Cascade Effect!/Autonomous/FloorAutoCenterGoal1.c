@@ -66,12 +66,15 @@ void allStop(){
 	motor[intake] = 0;
 }
 
+
 void raiseLift(int powerLevel){
-	motor[lift] = abs(powerLevel);
+		motor[lift] = -powerLevel;
+		motor[liftMotor3] = powerLevel;
 }
 
 void lowerLift(int powerLevel){
-	motor[lift] = -abs(powerLevel);
+		motor[lift] = powerLevel;
+		motor[liftMotor3] = -powerLevel;
 }
 
 void intakeIn(int powerLevel){
@@ -185,17 +188,9 @@ task main()
 {
 	init();
 	waitForStart();
-	drive(1,1.9,30);
+	drive(0,1.5,30);
 	allStop();
 	wait1Msec(500);
-	turn(1,90,50);
-	allStop();
-	wait1Msec(700);
-	bFloatDuringInactiveMotorPWM = true;
-	drive(0,1.0,50);
-	bFloatDuringInactiveMotorPWM = false;
-	allStop();
-	wait1Msec(750);
 	//DO WHATEVER DEPENDING ON CENTER ROTATION
 	determineRotation:
 	HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
@@ -208,70 +203,87 @@ task main()
 		avg4=(avg4+acS4)/2;
 		avg5=(avg5+acS5)/2;
 	}
-	if(acS2>16||acS3>30){ //Center is in rotation 1
-		nxtDisplayCenteredTextLine(1,"Rot1");
-		turn(0,90,70);
+	if(acS3>50&&acS4>40){ //Center is in rotation 3 (s2-90,s3-70)
+		nxtDisplayCenteredTextLine(1,"Rot3");
+		//Drop Ball
+		drive(1,.2,100);
+		allStop();
+		wait1Msec(200);
+		turn(1,165,70);
+		allStop();
+		wait1Msec(200);
+		while(SensorValue[sonarSensor]>21){
+			backward(30);
+		}
+		wait1Msec(200);
 		allStop();
 		wait1Msec(500);
-		drive(0,.98,50);
+		drive(0,.3,30);
+		allStop();
+		wait1Msec(100);
+		raiseLift(100);
+		while (nMotorEncoder[intake] > -2800) //while the encoder wheel turns one revolution
+		{
+		}
 		allStop();
 		wait1Msec(500);
+		releaseBalls();
+		allStop();
+		wait1Msec(3000);
+		retainBalls();
+		allStop();
+		wait1Msec(750);
+		lowerLift(80);
+		while (nMotorEncoder[intake] < 1500) //while the encoder wheel turns one revolution
+		{
+		}
+		allStop();
+		wait1Msec(500);
+		turn(1,165,70);
+		allStop();
+		wait1Msec(100);
 		turn(1,80,50);
+		allStop();
+		wait1Msec(500);
+		drive(0,.65,50);
+		allStop();
+		wait1Msec(500);
+		turn(0,90,100);
 		allStop();
 		wait1Msec(500);
 		drive(0,1.5,100);
 		allStop();
 		wait1Msec(500);
 	}
-	else{
-		turn(1,25,50);
-		allStop();
-		wait1Msec(500);
-		time1[T1]=0;
-		bool irfound = false;
-		timer = 0.0;
-		while(time1[T1] < 700){
+	else if(acS3>50){ //Center is in rotation 2
+		nxtDisplayCenteredTextLine(1,"Rot2");
+		while(acS2<20){
 			HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
-			forward(50);
-			if(acS2>15){
-				irfound = true;
-				timer = time1[T1]/1000+.3;
-				break;
-			}
+			nxtDisplayCenteredTextLine(1,"1: %i",acS1);
+			nxtDisplayCenteredTextLine(2,"2: %i",acS2);
+			nxtDisplayCenteredTextLine(3,"3: %i",acS3);
+			nxtDisplayCenteredTextLine(4,"4: %i",acS4);
+			nxtDisplayCenteredTextLine(5,"5: %i",acS5);
+			right(40);
 		}
 		allStop();
 		wait1Msec(500);
-		if(irfound){ //Center is in rotation 2
-			nxtDisplayCenteredTextLine(1,"Timer:%f",timer);
-			nxtDisplayCenteredTextLine(1,"Rot2:%d",acS2);
-			drive(1,timer,50);
-			allStop();
-			wait1Msec(500);
-			turn(0,90,80);
-			allStop();
-			wait1Msec(500);
-			drive(0,1.5,100);
-			allStop();
-			wait1Msec(500);
-		}
-		else{ //Center is in rotation 3
-			nxtDisplayCenteredTextLine(1,"Rot3");
-			drive(1,.7,50);
-			allStop();
-			wait1Msec(500);
-			turn(1,125,50);
-			while(SensorValue[sonarSensor]>20){
-				nxtDisplayCenteredBigTextLine(1,"GOGOGOGOG");
-				backward(30);
-			}
-			allStop();
-			wait1Msec(750);
-			turn(0,65,100);
-			allStop();
-			wait1Msec(500);
-			drive(1,1.5,100);
-			allStop();
-			wait1Msec(1000);
-		}
+		drive(0,1.0,100);
+		allStop();
+		wait1Msec(500);
+	}
+	else{
+		turn(1,45,50);
+		allStop();
+		wait1Msec(500);
+		drive(0,.9,50);
+		allStop();
+		wait1Msec(500);
+		turn(1,20,50);
+		allStop();
+		wait1Msec(500);
+		drive(1,1.2,100);
+		allStop();
+		wait1Msec(500);
 	}
 }

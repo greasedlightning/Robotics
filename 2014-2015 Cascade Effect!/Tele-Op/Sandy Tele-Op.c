@@ -21,8 +21,8 @@ void init(){
 	servo[fieldGrabberLeft] = _open;
 	servo[fieldGrabberRight] = 255-_open;
 	servo[rampBridge] = 0;
-	nMotorEncoder[intake] = 0;
 	servo[scoopBridge] = 155;
+	//nMotorEncoder[intake] = 0;
 }
 
 float exponentialJoystick(int joyVal){

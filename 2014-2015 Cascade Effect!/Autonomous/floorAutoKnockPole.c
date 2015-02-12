@@ -40,12 +40,12 @@ void sticksUp(){
 
 void retainBalls()
 {
-	servo[scoopBridge] = 0;
+	servo[scoopBridge] = 155;
 }
 
 void releaseBalls()
 {
-	servo[scoopBridge] = 155;
+	servo[scoopBridge] = 0;
 }
 
 void closeRamp()
