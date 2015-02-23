@@ -203,7 +203,7 @@ task main()
 		avg4=(avg4+acS4)/2;
 		avg5=(avg5+acS5)/2;
 	}
-	if(acS3>50&&acS4>40){ //Center is in rotation 3 (s2-90,s3-70)
+	if(acS3>50&&acS4>40||true){ //Center is in rotation 3 (s2-90,s3-70)
 		nxtDisplayCenteredTextLine(1,"Rot3");
 		//Drop Ball
 		drive(1,.2,100);

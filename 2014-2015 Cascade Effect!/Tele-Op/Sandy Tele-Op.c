@@ -137,7 +137,8 @@ void joystickTwo()
 	}
 	else if(joy2Btn(3))//Intake forward
 	{
-		motor[intake] = 80;
+		motor[intake] = 100
+		;
 	}
 	else{
 		motor[intake] = 0;

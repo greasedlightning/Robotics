@@ -251,7 +251,7 @@ task main()
 	allStop();
 	wait1Msec(100);
   raiseLift(100);
-  while (nMotorEncoder[intake] > -2050) //while the encoder wheel turns one revolution
+  while (nMotorEncoder[intake] > -2000) //while the encoder wheel turns one revolution
   {
   }
 	allStop();
@@ -262,7 +262,7 @@ task main()
 	retainBalls();
 	allStop();
 	wait1Msec(750);
-  lowerLift(20);
+  lowerLift(80);
   while (nMotorEncoder[intake] < 500) //while the encoder wheel turns one revolution
   {
   }

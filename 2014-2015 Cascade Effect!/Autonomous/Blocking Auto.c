@@ -147,10 +147,10 @@ void turn(int direction,int degrees,int powerLevel){//Dir:1 = right, 0 = left::D
 
 task main()
 {
-	init();
+	init();/*
 	float wait = 0.0;
 	while(nNxtButtonPressed!=1){ //Choose drive time
-		nxtDisplayCenteredBigTextLine(1,"Driving for:%fs",wait);
+		nxtDisplayCenteredTextLine(1,"Driving for:%fs",wait);
 		if(nNxtButtonPressed==0)
 			wait-=.5;
 		else if(nNxtButtonPressed==2)
@@ -158,11 +158,11 @@ task main()
 		if(wait<0)
 			wait=0;
 	}
-
+*/
 	waitForStart();
 
-	backward(100);
-	wait1Msec(wait*1000);
+	forward(100);
+	wait1Msec(1500);
 	allStop();
 	wait1Msec(500);
 }
