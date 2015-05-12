@@ -14,6 +14,7 @@
 #include "JoystickDriver.c"
 #include "/hitechnic-gyro.h"
 
+
 #define _open 0
 #define _closed 205
 #define _threshold 20
@@ -22,9 +23,9 @@ void init(){
 	servo[fieldGrabberLeft] = _open;
 	servo[fieldGrabberRight] = 255-_open;
 	servo[rampBridge] = 0;
-	servo[scoopBridge] = 135;
-	servo[autoBallRelease] = 45;
-	//nMotorEncoder[intake] = 0;
+	servo[scoopBridge] = 137;
+	servo[autoBallRelease] = 200;
+	nMotorEncoder[intake] = 0;
 }
 
 float exponentialJoystick(int joyVal){
@@ -36,7 +37,7 @@ void releaseAutoBall(){
 }
 
 void retainAutoBall(){
-	servo[autoBallRelease] = 45;
+	servo[autoBallRelease] = 8;
 }
 
 void sticksDown(){
@@ -51,7 +52,7 @@ void sticksUp(){
 
 void retainBalls()
 {
-	servo[scoopBridge] = 135;
+	servo[scoopBridge] = 137;
 }
 
 void releaseBalls()
@@ -162,15 +163,15 @@ void joystickTwo()
 		closeRamp();
 	}
 
-	if(joy2Btn(6))//Lift up
+	if(joy2Btn(6))//Lift Down
 	{
 		motor[lift] = 100;
 		motor[liftMotor3] = -100;
 	}
 	else if(joy2Btn(5))//Lift ups
 	{
-		motor[lift] = -60;
-		motor[liftMotor3] = 60;
+		motor[lift] = -30;
+		motor[liftMotor3] = 30;
 	}
 	else
 	{

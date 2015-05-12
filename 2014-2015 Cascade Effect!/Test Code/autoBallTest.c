@@ -16,7 +16,7 @@ void releaseAutoBall(){
 }
 
 void retainAutoBall(){
-	servo[autoBallRelease] = 42;
+	servo[autoBallRelease] = 8;
 }
 
 task main()
